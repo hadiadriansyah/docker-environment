@@ -1,0 +1,25 @@
+http:
+  routers:
+    dashboard:
+      rule: "Host(`traefik.localhost`)"
+      service: api@internal
+      entryPoints:
+        - web
+      middlewares:
+        - auth
+
+  middlewares:
+    auth:
+      basicAuth:
+        users:
+          - "admin:$apr1$0Ig36K77$1RW563O2JSMCALdmH1NA4."
+
+    secure-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
