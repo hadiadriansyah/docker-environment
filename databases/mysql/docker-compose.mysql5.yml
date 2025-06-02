@@ -1,47 +1,46 @@
 services:
-  mysql:
-    image: mysql:8.4.5
-    container_name: mysql-db
+  mysql5:
+    image: mysql:5.7
+    container_name: mysql5-db
     restart: always
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "${MYSQL5_PORT}:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       # MYSQL_DATABASE: ${MYSQL_DATABASE}
       # MYSQL_USER: ${MYSQL_USER}
       # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql5_data:/var/lib/mysql
     networks:
       - db-net
 
-  phpmyadmin:
+  phpmyadmin5:
     image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
+    container_name: phpmyadmin5
     restart: always
     environment:
-      PMA_HOST: ${PMA_HOST}
-      PMA_PORT: ${PMA_PORT}
+      PMA_HOST: ${PMA5_HOST}
+      PMA_PORT: ${PMA5_PORT}
       UPLOAD_LIMIT: ${UPLOAD_LIMIT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pma.rule=Host(`pma.localhost`)"
-      - "traefik.http.routers.pma.entrypoints=web"
-      - "traefik.http.services.pma.loadbalancer.server.port=80"
+      - "traefik.http.routers.pma5.rule=Host(`pma5.localhost`)"
+      - "traefik.http.routers.pma5.entrypoints=web"
+      - "traefik.http.services.pma5.loadbalancer.server.port=80"
       - "traefik.docker.network=proxy-net"
     # ports:
-    #   - "${PMA_GUI_PORT}:80"
+    #   - "${PMA5_GUI_PORT}:80"
     expose:
       - "80"
     depends_on:
-      - mysql
+      - mysql5
     networks:
       - db-net
       - proxy-net
-      - local-net
 
 volumes:
-  mysql_data:
+  mysql5_data:
     external: true
 
 networks:
@@ -49,5 +48,3 @@ networks:
     external: true
   proxy-net:
     external: true
-  local-net:
-    driver: bridge
