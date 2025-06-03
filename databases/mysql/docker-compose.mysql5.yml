@@ -21,7 +21,7 @@ services:
     restart: always
     environment:
       PMA_HOST: ${PMA5_HOST}
-      PMA_PORT: ${PMA5_PORT}
+      PMA_PORT: ${PMA_PORT}
       UPLOAD_LIMIT: ${UPLOAD_LIMIT}
     labels:
       - "traefik.enable=true"
@@ -29,8 +29,8 @@ services:
       - "traefik.http.routers.pma5.entrypoints=web"
       - "traefik.http.services.pma5.loadbalancer.server.port=80"
       - "traefik.docker.network=proxy-net"
-    # ports:
-    #   - "${PMA5_GUI_PORT}:80"
+    ports:
+      - "${PMA5_GUI_PORT}:80"
     expose:
       - "80"
     depends_on:

@@ -29,8 +29,8 @@ services:
       - "traefik.http.routers.pma.entrypoints=web"
       - "traefik.http.services.pma.loadbalancer.server.port=80"
       - "traefik.docker.network=proxy-net"
-    # ports:
-    #   - "${PMA_GUI_PORT}:80"
+    ports:
+      - "${PMA_GUI_PORT}:80"
     expose:
       - "80"
     depends_on:
