@@ -21,6 +21,7 @@ services:
 
 volumes:
   portainer_data:
+    external: true
 
 networks:
   proxy-net:

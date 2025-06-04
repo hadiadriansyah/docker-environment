@@ -1,1 +1,5 @@
-projects/
+projects/*
+
+!projects/.gitkeep
+!projects/project-b/
+!projects/project-b/**
