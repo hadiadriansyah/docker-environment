@@ -1,15 +1,11 @@
-FROM php:8.3-apache
+FROM php:8.3-fpm
 
 LABEL maintainer="hadiadriansyah21@gmail.com"
 LABEL description="PHP 8.3 + Apache + Node.js + Composer"
 
-ARG DOC_ROOT=/var/www/html
-ENV APACHE_DOCUMENT_ROOT=${DOC_ROOT}
-
-# Install dependencies
 RUN apt-get update && apt-get install -y \
     git unzip zip curl gnupg ca-certificates \
-    libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libzip-dev libpq-dev \
+    libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libonig-dev libpq-dev \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
@@ -21,19 +17,10 @@ RUN apt-get update && apt-get install -y \
         pgsql \
     && docker-php-ext-enable pdo_mysql pdo_pgsql
 
-# Install Apache rewrite module
-RUN a2enmod rewrite
-
-# Ubah DocumentRoot dan AllowOverride
-RUN sed -i "s|DocumentRoot /var/www/html|DocumentRoot ${APACHE_DOCUMENT_ROOT}|g" /etc/apache2/sites-available/000-default.conf \
- && sed -i "/<Directory \/var\/www\/>/,/<\/Directory>/ s|AllowOverride None|AllowOverride All|" /etc/apache2/apache2.conf
-
-# Install Node.js 20.x
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g npm
 
-# Install Composer
 COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
@@ -44,6 +31,6 @@ WORKDIR /var/www/html
 # Permissions
 RUN chown -R www-data:www-data /var/www/html
 
-EXPOSE 80
+EXPOSE 9000
 
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]

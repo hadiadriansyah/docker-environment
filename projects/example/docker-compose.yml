@@ -1,0 +1,58 @@
+services:
+  example-nginx:
+    build:
+      context: ../../
+      dockerfile: proxy/nginx/php/8.3/Dockerfile
+    image: example-nginx
+    container_name: example-nginx
+    restart: unless-stopped
+    volumes:
+      - ./app:/var/www/html
+    # labels: # Uncomment if using Traefik for reverse proxy
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.example-nginx.rule=Host(`example.nginx.localhost`)"
+    #   - "traefik.http.routers.example-nginx.entrypoints=web"
+    #   - "traefik.http.services.example-nginx.loadbalancer.server.port=80"
+    #   - "traefik.docker.network=proxy-net"
+    # expose:
+    #   - "80"
+    networks:
+      - proxy-net
+
+  example-apache:
+    build:
+      context: ../../
+      dockerfile: proxy/apache/php/8.3/Dockerfile
+      args:
+        DOC_ROOT: /var/www/html
+      # network: host # development only, not used in production
+    environment:
+      - SERVER_NAME=example.apache.localhost
+      - DOC_ROOT=/var/www/html
+    image: example-apache
+    # dns: # default DNS servers, uncomment if needed
+    #   - 8.8.8.8
+    #   - 1.1.1.1
+    container_name: example-apache
+    restart: unless-stopped
+    # labels: # Uncomment if using Traefik for reverse proxy
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.example-apache.rule=Host(`example.apache.localhost`)"
+    #   - "traefik.http.routers.example-apache.entrypoints=web"
+    #   - "traefik.http.services.example-apache.loadbalancer.server.port=80"
+    #   - "traefik.docker.network=proxy-net"
+    # expose:
+    #   - "80"
+    ports:
+      - "${APACHE_PORT}:80"
+    volumes:
+      - ./app:/var/www/html
+      # - ../../installers/php/apache/configs/php5.6/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - db-net
+
+networks:
+  db-net: 
+    external: true
+  proxy-net: 
+    external: true
