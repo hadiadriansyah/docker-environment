@@ -3,3 +3,7 @@ projects/*
 !projects/.gitkeep
 !projects/example/
 !projects/example/**
+
+!projects/**/Dockerfile
+
+!projects/**/docker-compose.yml
