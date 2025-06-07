@@ -4,5 +4,6 @@ projects/*
 !projects/example/
 !projects/example/**
 
+!projects/*/
 !projects/**/Dockerfile
 !projects/**/docker-compose.yml
