@@ -1,20 +1,15 @@
-# Ignore all contents of the projects/ folder
-projects/*
+# Abaikan semua isi folder projects/ secara rekursif
+projects/**
 
+# Tapi izinkan Git tetap mengakses semua subfolder
+!projects/**/
+
+# Selalu track file penting berikut:
+!projects/**/Dockerfile
+!projects/**/docker-compose.yml
 !projects/.gitkeep
 !projects/**/.gitkeep
+
+# Seluruh isi folder example tetap di-track penuh
 !projects/example/
 !projects/example/**
-
-# Exclude all subfolders so we can see their contents
-!projects/*/
-
-# Track only important files inside subfolders
-!projects/**/Dockerfile
-!projects/**/docker-compose.yml
-
-# Do not track files other than those 2 files
-projects/**/*
-!projects/**/Dockerfile
-!projects/**/docker-compose.yml
-
