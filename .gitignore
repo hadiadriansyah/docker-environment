@@ -1,16 +1,21 @@
-# Abaikan semua isi dalam folder projects/
+# Abaikan semua isi dalam projects/
 projects/*
 
-# Kecualikan .gitkeep agar projects/ tetap ter-track
+# Kecualikan file .gitkeep
 !projects/.gitkeep
 
-# Kecualikan semua subfolder agar Git bisa masuk ke dalamnya
+# Izinkan Git melihat semua subfolder
 !projects/*/
+!projects/**/
 
-# Track semua Dockerfile dan docker-compose.yml dalam subfolder mana pun
+# Track hanya Dockerfile dan docker-compose.yml
 !projects/**/Dockerfile
 !projects/**/docker-compose.yml
 
-# Track semua isi folder example
+# Track semua isi folder example sepenuhnya
 !projects/example/
 !projects/example/**
+
+# Abaikan semua file .gitignore di dalam projects/, kecuali example
+projects/**/.gitignore
+!projects/example/.gitignore
