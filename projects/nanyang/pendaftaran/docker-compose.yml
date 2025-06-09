@@ -1,0 +1,39 @@
+
+services:
+  nanyang-pendaftaran:
+    build:
+      context: ../../../
+      dockerfile: installers/fullstack/Dockerfile.nginx
+      # args: # for Apache, uncomment and set the document root
+      #   DOC_ROOT: /var/www/html/public
+      # network: host # development only, not used in production
+    image: nanyang-pendaftaran
+    # dns: # default DNS servers, uncomment if needed
+    #   - 8.8.8.8
+    #   - 1.1.1.1
+    container_name: nanyang-pendaftaran
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nanyang-pendaftaran.rule=Host(`nanyang.pendaftaran.localhost`)"
+      - "traefik.http.routers.nanyang-pendaftaran.entrypoints=web"
+      - "traefik.http.services.nanyang-pendaftaran.loadbalancer.server.port=9000"
+      - "traefik.docker.network=proxy-net"
+    ports:
+      - "${APP_PORT}:9000"
+    expose:
+      - "9000"
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - db-net
+      - proxy-net
+      - local-net
+
+networks:
+  db-net:
+    external: true
+  proxy-net: 
+    external: true
+  local-net:
+    driver: bridge

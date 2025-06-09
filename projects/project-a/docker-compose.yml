@@ -1,0 +1,17 @@
+
+services:
+  project-a:
+    build:
+      context: ../../
+      dockerfile: installers/fullstack/Dockerfile.nginx-dev
+    image: project-a
+    container_name: project-a
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net: 
+    external: true
