@@ -1,0 +1,60 @@
+services:
+  backend:
+    build: ./apps/backend
+    container_name: mlm-backend
+    env_file:
+      - ./apps/backend/.env
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./apps/backend:/app
+      - /app/node_modules
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mlm-binary-api.rule=Host(`mlm-binary.api.localhost`)"
+      - "traefik.http.routers.mlm-binary-api.entrypoints=web"
+      - "traefik.http.services.mlm-binary-api.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy-net"
+    # ports:
+    #   - "${BACKEND_PORT}:3000"
+    expose:
+      - 3000
+    networks:
+      - db-net
+      - proxy-net
+      - local-net
+
+  frontend:
+    build: ./apps/frontend
+    container_name: mlm-frontend
+    depends_on:
+      - backend
+    env_file:
+      - ./apps/frontend/.env
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./apps/frontend:/app
+      - /app/node_modules
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mlm-binary.rule=Host(`mlm-binary.localhost`)"
+      - "traefik.http.routers.mlm-binary.entrypoints=web"
+      - "traefik.http.services.mlm-binary.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy-net"
+    # ports:
+    #   - "${FRONTEND_PORT}:3000"
+    expose:
+      - 3000
+    networks:
+      - db-net
+      - proxy-net
+      - local-net
+
+networks:
+  db-net:
+    external: true
+  proxy-net:
+    external: true
+  local-net:
+    driver: bridge
