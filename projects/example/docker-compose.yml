@@ -3,7 +3,11 @@ services:
     build:
       context: ../../
       dockerfile: proxy/nginx/php/8.3/Dockerfile
+      # network: host # development only, not used in production
     image: example-nginx
+    # dns: # default DNS servers, uncomment if needed
+    #   - 8.8.8.8
+    #   - 1.1.1.1
     container_name: example-nginx
     restart: unless-stopped
     volumes:
@@ -56,3 +60,5 @@ networks:
     external: true
   proxy-net: 
     external: true
+  # local-net:
+  #   driver: bridge

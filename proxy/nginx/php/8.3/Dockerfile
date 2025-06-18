@@ -4,7 +4,7 @@ LABEL maintainer="hadiadriansyah21@gmail.com"
 LABEL description="PHP 8.3 + Apache + Node.js + Composer"
 
 RUN apt-get update && apt-get install -y \
-    git unzip zip curl gnupg ca-certificates \
+    bash git unzip zip curl gnupg ca-certificates \
     libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libonig-dev libpq-dev \
     && docker-php-ext-install \
         pdo \
@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
         gd \
         pdo_pgsql \
         pgsql \
+        pcntl \
     && docker-php-ext-enable pdo_mysql pdo_pgsql
 
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
