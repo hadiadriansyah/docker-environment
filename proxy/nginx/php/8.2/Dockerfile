@@ -1,7 +1,7 @@
-FROM php:8.3-fpm
+FROM php:8.2-fpm
 
 LABEL maintainer="hadiadriansyah21@gmail.com"
-LABEL description="PHP 8.3 + Apache + Node.js + Composer"
+LABEL description="PHP 8.2 + Apache + Node.js + Composer"
 
 RUN apt-get update && apt-get install -y \
     bash git unzip zip curl gnupg ca-certificates \

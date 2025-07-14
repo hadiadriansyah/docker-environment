@@ -13,7 +13,7 @@ RUN chmod +x /entrypoint.sh
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    git unzip zip curl gnupg ca-certificates \
+    gettext git unzip zip curl gnupg ca-certificates \
     libpng-dev libjpeg-dev libfreetype6-dev libonig-dev libzip-dev libpq-dev \
     && docker-php-ext-install \
         pdo \
