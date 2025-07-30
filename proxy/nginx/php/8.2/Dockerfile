@@ -32,6 +32,8 @@ WORKDIR /var/www/html
 # Permissions
 RUN chown -R www-data:www-data /var/www/html
 
+RUN echo "memory_limit=512M" > /usr/local/etc/php/conf.d/memory-limit.ini
+
 EXPOSE 9000
 
 CMD ["php-fpm"]

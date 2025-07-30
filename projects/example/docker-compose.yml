@@ -47,8 +47,8 @@ services:
     #   - "traefik.docker.network=proxy-net"
     # expose:
     #   - "80"
-    ports:
-      - "${APACHE_PORT}:80"
+    # ports:
+    #   - "${APACHE_PORT}:80"
     volumes:
       - .:/var/www/html
       # - ../../installers/php/apache/configs/php5.6/php.ini:/usr/local/etc/php/php.ini
